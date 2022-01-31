@@ -1,0 +1,11 @@
+Invoke-Rest Method(uri=https://localhost:7248/swagger/index.html)
+
+$response = Invoke-RestMethod 'https://localhost:7248/swagger/index.html/api/RuedaController/1
+
+$rueda ={
+	marcaRueda="michelin"
+	movimiento=false
+}
+$json = $rueda | ConvertTo-Json
+$response = Invoke-RestMethod 'https://localhost:7248/swagger/index.html/api/RuedaController' -Method Post -Body $json -ContentType 'application/json'
+
