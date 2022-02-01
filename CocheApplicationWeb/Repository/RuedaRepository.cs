@@ -54,13 +54,11 @@ namespace CocheApplicationWeb.Repository
             MiDBContext.SaveChanges();
         }
 
-        public void Update(int id,Rueda rueda)
+        public void Update(Rueda rueda)
         {
-            if (rueda != null && id != null)
+            if (rueda != null)
             {
-                Rueda ruedaC = FindId(id);
-                ruedaC.marcaRueda = rueda.marcaRueda;
-                ruedaC.movimiento = rueda.movimiento;
+                MiDBContext.Update(rueda);
                 MiDBContext.SaveChanges();
             }
             else

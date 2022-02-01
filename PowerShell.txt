@@ -1,11 +1,11 @@
-Invoke-Rest Method(uri=https://localhost:7248/swagger/index.html)
+Invoke-Rest Method -Uri http://localhost:5033/api/Coche
 
-$response = Invoke-RestMethod 'https://localhost:7248/swagger/index.html/api/RuedaController/1
+Invoke-Rest Method -Uri http://localhost:5033/api/Coche/1
 
-$rueda ={
-	marcaRueda="michelin"
-	movimiento=false
-}
-$json = $rueda | ConvertTo-Json
-$response = Invoke-RestMethod 'https://localhost:7248/swagger/index.html/api/RuedaController' -Method Post -Body $json -ContentType 'application/json'
+Invoke-RestMethod -Uri http://localhost:5033/api/Coche -Body '{"id": 0, "marcaCoche": "string",  "rueda": {    "id": 0, "marcaRueda": "string",    "movimiento": true  },  "motor": true}' -ContentType application/json -Method POST
+
+Invoke-Rest Method -Method Delete -Uri http://localhost:5033/api/Coche/1
+
+Invoke-RestMethod -Uri http://localhost:5033/api/Coche -Body '{"id": 0, "marcaCoche": "string",  "rueda": {    "id": 0, "marcaRueda": "string",    "movimiento": true  },  "motor": true}' -ContentType application/json -Method PUT
+
 

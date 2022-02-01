@@ -13,6 +13,12 @@ namespace TestController
 
         private RuedaRepository ruedaRepository;
 
+        [TestInitialize]
+        private void SetUp()
+        {
+            Rueda r = new Rueda("michelin", false);
+        }
+
         [TestMethod]
         public void TestGetRuedas()
         {

@@ -9,80 +9,91 @@ namespace CocheApplicationWeb.Controllers
     public class RuedaController : ControllerBase
     {
 
-            private RuedaRepository ruedaRepository;
+        private RuedaRepository ruedaRepository;
+        private MiDBContext _context;
 
-            public RuedaController(RuedaRepository ruedaRepository)
+        public RuedaController(RuedaRepository ruedaRepository, MiDBContext context)
+        {
+            this.ruedaRepository = ruedaRepository;
+            this._context = context;
+        }
+
+        [HttpPost]
+        public void CreateRueda(Rueda rueda)
+        {
+            using var transaction = this._context.Database.BeginTransaction();
+            try
             {
-                this.ruedaRepository = ruedaRepository;
+                ruedaRepository.Add(rueda);
             }
-
-            [HttpPost]
-            public void CreateRueda(Rueda rueda)
+            catch
             {
-                try
-                {
-                    ruedaRepository.Add(rueda);
-                }
-                catch
-                {
-                    StatusCode(500);
-                }
+                transaction.Rollback();
+                StatusCode(500);
             }
+        }
 
-            [HttpGet]
-            public ActionResult<Object> GetRuedas()
+        [HttpGet]
+        public ActionResult<Object> GetRuedas()
+        {
+            using var transaction = this._context.Database.BeginTransaction();
+            try
             {
-                try
-                {
-                 return Ok(ruedaRepository.GetAll());
-                }
-                catch(Exception exp)
-                {
-                    return StatusCode(500);
-                }
+                return Ok(ruedaRepository.GetAll());
             }
-
-            [HttpGet]
-            [Route("rueda/{id}")]
-            public ActionResult<Object> GetRueda(int id)
+            catch (Exception exp)
             {
+                transaction.Rollback();
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        [Route("rueda/{id}")]
+        public ActionResult<Object> GetRueda(int id)
+        {
+            using var transaction = this._context.Database.BeginTransaction();
             try
             {
                 return Ok(ruedaRepository.FindId(id));
             }
             catch (Exception exp)
             {
+                transaction.Rollback();
                 return StatusCode(500);
             }
         }
 
-            [HttpDelete]
-            [Route("rueda/{id}")]
-            public void DeleteRueda(int id)
+        [HttpDelete]
+        [Route("rueda/{id}")]
+        public void DeleteRueda(int id)
+        {
+            using var transaction = this._context.Database.BeginTransaction();
+            try
             {
-                try
-                {
-                    ruedaRepository.Delete(id);
-                }
-                catch
-                {
-                    StatusCode(500);
-                }
+                ruedaRepository.Delete(id);
+            }
+            catch
+            {
+                transaction.Rollback();
+                StatusCode(500);
+            }
         }
 
-            [HttpPut]
-            [Route("rueda/{id}")]
-            public void UpdateRueda(int id,Rueda rueda)
+        [HttpPut]
+        public void UpdateRueda(Rueda rueda)
+        {
+            using var transaction = this._context.Database.BeginTransaction();
+            try
             {
-                try
-                {
-                    ruedaRepository.Update(id, rueda);
-                }
-                catch
-                {
-                    StatusCode(500);
-                }
+                ruedaRepository.Update(rueda);
+            }
+            catch
+            {
+                transaction.Rollback();
+                StatusCode(500);
+            }
         }
 
-        }
     }
+}

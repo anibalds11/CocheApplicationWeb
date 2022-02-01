@@ -1,18 +1,22 @@
 ﻿using CocheApplicationWeb.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CocheApplicationWeb.Repository
 {
     public class MiDBContext: DbContext
     {
-        public MiDBContext()
+        private IConfiguration configuration;
+        public MiDBContext(IConfiguration configuration)
         {
+            this.configuration = configuration;
             this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\ProjectModels;Database=BBDDCoches;Trusted_Connection=True;");
+            optionsBuilder.UseLazyLoadingProxies()
+                .UseSqlServer(configuration.GetConnectionString("conexion"));
         }
 
         public DbSet<Rueda> Ruedas { get; set; }

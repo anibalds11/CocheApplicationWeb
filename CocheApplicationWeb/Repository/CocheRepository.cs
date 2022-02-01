@@ -36,7 +36,7 @@ namespace CocheApplicationWeb.Repository
 
         public void Add(Coche coche)
         {
-            if (coche != null && id != null)
+            if (coche != null)
             {
                 MiDBContext.Coches.Add(coche);
                 MiDBContext.SaveChanges();
@@ -55,14 +55,11 @@ namespace CocheApplicationWeb.Repository
             MiDBContext.SaveChanges();
         }
 
-        public void Update(int id,Coche coche)
+        public void Update(Coche coche)
         {
-            if (coche != null && id != null)
+            if (coche != null)
             {
-                Coche cocheC = FindId(id);
-                cocheC.marcaCoche = coche.marcaCoche;
-                cocheC.motor = coche.motor;
-                cocheC.rueda = coche.rueda;
+                MiDBContext.Update(coche);
                 MiDBContext.SaveChanges();
             }
             else

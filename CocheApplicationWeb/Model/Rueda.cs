@@ -9,8 +9,9 @@ namespace CocheApplicationWeb.Model
         public string marcaRueda { get; set; }
         public Boolean movimiento { get; set; }
 
-        public Rueda(string marcaRueda, bool movimiento)
+        public Rueda(int id,string marcaRueda, bool movimiento)
         {
+            this.id = id;
             this.marcaRueda = marcaRueda;
             this.movimiento = movimiento;
         }
